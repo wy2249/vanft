@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="bg-gray sticky top-0 z-50 px-4 py-5 items-center flex justify-between text-black"
+    class="bg-white sticky top-0 z-50 px-4 py-5 items-center flex justify-between text-black"
   >
     <router-link to="/">
       <div class="cursor-pointer flex lg:w-4/12 relative">
@@ -31,13 +31,13 @@
     <button v-show="isConnected" @click="disconnect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       {{account.slice(0,7)}}...{{account.slice(-4)}}
     </button>
-    <button v-show="isConnected" @click="approveMoney">approve $100</button>
+    <button v-show="isConnected" @click="createnft">create nft</button>
   </nav>
 </template>
 
 <script>
 import {config} from './config';
-// import services from "@/api";
+import services from "@/api";
 
 
 export default{
@@ -69,6 +69,15 @@ export default{
         console.log("disconnecting to Ale wallet...");
         window["aleereum"] && window["aleereum"].open();
       },
+      createnft() {
+        if (this.isConnected){
+          services.createItem(this.account, "www.sample.com");
+          services.createItem(this.account, "www.sample.com");
+          services.getItems().then(res => {
+            console.log(res);
+          });
+        }
+      }
       // approveMoney() {
       // services.getName().then(res => {
       //   console.log(res);

@@ -3,7 +3,7 @@ import App from './App.vue';
 import store from './store';
 import "./plugin.js";
 import { createRouter, createWebHistory } from 'vue-router';
-import Homepage from './pages/homepage';
+import Homepage from './pages/homepage/Homepage.vue';
 import CreatePage from './pages/create';
 
 const app = createApp(App);

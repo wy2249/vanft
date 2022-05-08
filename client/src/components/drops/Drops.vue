@@ -6,16 +6,16 @@
         <div className="rounded-lg border m-2">
           <img v-bind:src="drop.img" className="h-full max-w-full" />
           <div className="p-5 flex justify-center items-center flex-col">
-            <h1 className="text-lg mt-2 font-bold">{{ drop.title }}</h1>
+            <h1 className="text-lg mt-2 font-bold">{{ drop.name }}</h1>
             <p className="text-md mt-2">{{ drop.description }}</p>
             <ul className="mt-2">
-              <li
+              <!-- <li
                 className="border hover:text-white hover:bg-black cursor-pointer rounded-xl px-10 py-2 border-black"
                 v-for="(tag, tagIdx) in drop.tags"
                 :key="tagIdx"
               >
                 <h1>{{ tag }}</h1>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
