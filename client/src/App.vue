@@ -1,16 +1,17 @@
 <template>
-  <HelloWorld />
+  <Header />
+  <router-view />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
 import { mapGetters } from "vuex";
+import Header from './components/header/Header.vue';
+import './index.css';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    HelloWorld,
+    Header,
   },
   computed: {
     ...mapGetters(["usingAle"]),
@@ -19,6 +20,7 @@ export default {
     usingAle(val) {
       if (val) {
         this.listenDataChange();
+        console.log("listen change");
       }
     },
   },
@@ -44,14 +46,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
