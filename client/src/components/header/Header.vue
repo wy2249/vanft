@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="bg-gray-100 sticky top-0 z-50 px-4 py-5 bg-white items-center flex justify-between text-black"
+    class="bg-gray sticky top-0 z-50 px-4 py-5 items-center flex justify-between text-black"
   >
     <router-link to="/">
       <div class="cursor-pointer flex lg:w-4/12 relative">
@@ -9,7 +9,7 @@
           src="/logo.png"
           alt=“Logo“
         />
-        <span class="uppercase py-4 px-4 font-bold text-3xl justify-center "> VANFT </span>
+        <span class="uppercase py-4 px-4 font-bold text-3xl justify-center lg:flex"> VANFT </span>
       </div>
     </router-link>
 
@@ -25,17 +25,20 @@
       </li>
     </ul>
 
-    <button v-show="!isConnected" @click="connect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-4/12 justify-center">
+    <button v-show="!isConnected" @click="connect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       Connect Ale
     </button>
-    <button v-show="isConnected" @click="disconnect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-4/12 justify-center">
-      {{account}}
+    <button v-show="isConnected" @click="disconnect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
+      {{account.slice(0,7)}}...{{account.slice(-4)}}
     </button>
+    <button v-show="isConnected" @click="approveMoney">approve $100</button>
   </nav>
 </template>
 
 <script>
 import {config} from './config';
+// import services from "@/api";
+
 
 export default{
     data() {
@@ -66,6 +69,14 @@ export default{
         console.log("disconnecting to Ale wallet...");
         window["aleereum"] && window["aleereum"].open();
       },
+      // approveMoney() {
+      // services.getName().then(res => {
+      //   console.log(res);
+      // });
+      // services.approve(100).then((res) => {
+      //   console.log(res);
+      // });
+    // },
     },
   };
 </script>
