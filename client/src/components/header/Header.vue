@@ -71,11 +71,11 @@ export default{
       },
       createnft() {
         if (this.isConnected){
-          services.createItem(this.account, "www.sample.com");
-          services.createItem(this.account, "www.sample.com");
-          services.getItems().then(res => {
-            console.log(res);
-          });
+          services.createItem("www.sample.com");
+          // services.createItem(this.account, "www.sample.com");
+          // services.getItems().then(res => {
+          //   console.log(res);
+          // });
         }
       }
       // approveMoney() {
