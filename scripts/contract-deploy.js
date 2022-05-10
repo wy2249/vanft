@@ -1,23 +1,20 @@
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
+const hre = require("hardhat");
+const fs = require('fs');
 
 async function main() {
-    const Market = await ethers.getContractFactory('NFTMarket');
-    const market = await Market.deploy();
-    await market.deployed();
-    const marketAddress = market.address;
-    console.log("nft market contract deployed to:", marketAddress);
+  const NFTMarketplace = await hre.ethers.getContractFactory("NFTMarketplace");
+  const nftMarketplace = await NFTMarketplace.deploy();
+  await nftMarketplace.deployed();
+  console.log("nftMarketplace deployed to:", nftMarketplace.address);
 
-    const NFT = await ethers.getContractFactory('NFT');
-    const nft = await NFT.deploy(marketAddress);
-    await nft.deployed();
-    const nftContractAddress = nft.address;
-    console.log("nft contract deployed to:", nftContractAddress);
+  fs.writeFileSync('./config.js', `
+  export const marketplaceAddress = "${nftMarketplace.address}"
+  `)
 }
 
 main()
-.then(() => process.exit(0))
-.catch((error) => {
-    console.error(error)
-    process.exit(1)
-})
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
