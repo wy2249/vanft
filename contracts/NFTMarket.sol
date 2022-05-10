@@ -29,6 +29,10 @@ contract NFTMarket is ReentrancyGuard {
 
   mapping(uint256 => MarketItem) private idToMarketItem;
 
+  event Print(string s);
+  event Print(bool b, string s);
+  event Print(uint256 i, string s);
+
   event MarketItemCreated (
     uint indexed itemId,
     address indexed nftContract,
@@ -49,6 +53,7 @@ contract NFTMarket is ReentrancyGuard {
 
     _itemIds.increment();
     uint256 itemId = _itemIds.current();
+    emit Print("line 52 creating itemId", itemId);
 
     idToMarketItem[itemId] = MarketItem(
       itemId,
