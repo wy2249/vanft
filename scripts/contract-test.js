@@ -17,11 +17,17 @@ async function main() {
     let listingPrice = await market.getListingPrice();
     listingPrice = listingPrice.toString();
     const auctionPrice = ethers.utils.parseUnits('0.000000001', 'ether');
-    let t1 = await nft.createToken("https://www.mytokenlocation.com");
-    let t2 = await nft.createToken("https://www.myothertokenlocation.com");
+    let t1 = await nft.createToken("https://www.mytokenlocation.com", {from: '0x96C4a6b3428A1dD9771dEFFf1280dB1Ad013F65A'});
+    let t2 = await nft.createToken("https://www.myothertokenlocation.com", {from: '0x96C4a6b3428A1dD9771dEFFf1280dB1Ad013F65A'});
     console.log(t1, t2);
     console.log(t1.value, t2.value);
-    await market.createMarketItem(nftContractAddress, 1, auctionPrice, {value: listingPrice});
+
+    const reponse = await market.createMarketItem(nftContractAddress, 1, auctionPrice, {value: listingPrice});
+    const transactionReceipt = await reponse.wait();
+    console.log("events:")
+    console.log(transactionReceipt.events);
+    console.log();
+
     await market.createMarketItem(nftContractAddress, 2, auctionPrice, {value: listingPrice});
 
     let pre_items = await market.fetchMarketItems();

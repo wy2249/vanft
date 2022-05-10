@@ -5,11 +5,11 @@ const market_abi = require("./../../artifacts/contracts/NFTMarket.sol/NFTMarket.
 
 const McpFunc = new Mcp();
 
-McpFunc.Contract.setProvider("http://13.212.177.203:8765");//HUYGENS_URL
+McpFunc.Contract.setProvider("http://18.182.45.18:8765");//HUYGENS_dev_URL
 
-const tokenAddress = "0xaF2BA00e5e169Ab889775341ACC027a1AD7b0182";//nft contract address
-const marketaddress = "0xA648FbA74Ce16Af1F4a289Aaa80869B9B5e896C2"; //nft market contract address
-const coreAddress = "0x434A2417EDbF809E91E62fe3b213bA51d4B164aD"; //nft market contract address
+const tokenAddress = "0xDA0A40484198353E7554A77b6Fb87b449bDd875A";//nft contract address
+const marketaddress = "0xB3311c230A938d8596628e217EB2b7C2128D5ED3"; //nft market contract address
+// const coreAddress = "0x434A2417EDbF809E91E62fe3b213bA51d4B164aD"; //nft market contract address
 
 const NFT_Instance = new McpFunc.Contract(
     nft_abi.abi,
@@ -26,7 +26,7 @@ const Contract = {
     NFT_Instance,
     marketaddress,
     Market_Instance,
-    coreAddress
+    // coreAddress
 };
 
 export default Contract;

@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "hardhat/console.sol";
 
 contract NFTMarket is ReentrancyGuard {
   using Counters for Counters.Counter;
@@ -32,6 +33,7 @@ contract NFTMarket is ReentrancyGuard {
   event Print(string s);
   event Print(bool b, string s);
   event Print(uint256 i, string s);
+  event Print(string s, uint256 i);
 
   event MarketItemCreated (
     uint indexed itemId,
@@ -54,6 +56,7 @@ contract NFTMarket is ReentrancyGuard {
     _itemIds.increment();
     uint256 itemId = _itemIds.current();
     emit Print("line 52 creating itemId", itemId);
+    console.log("line 52 creating itemId", itemId);
 
     idToMarketItem[itemId] = MarketItem(
       itemId,
@@ -64,8 +67,21 @@ contract NFTMarket is ReentrancyGuard {
       price,
       false
     );
+    emit Print("line 68 creating id", itemId);
 
     IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+
+    emit MarketItemCreated(
+        itemId,
+      nftContract,
+      tokenId,
+      payable(msg.sender),
+      payable(address(0)),
+      price,
+      false
+    );
+
+    emit Print("line 82 creating id", itemId);
   }
 
   function createMarketSale(address nftContract, uint256 itemId) public payable nonReentrant {
