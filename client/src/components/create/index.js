@@ -7,6 +7,7 @@ import Form from './Form.vue';
 // const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
 // import { nftaddress, nftmarketaddress } from '../../config';
+import services from "@/api";
 
 const NAME_ERROR = 'Insert a name';
 
@@ -18,15 +19,24 @@ Form.data = () => ({
   config: config,
   name: '',
   media: '',
+  price: '',
   desc: '',
   errors: [],
+  success: 0,
 });
 
 Form.methods = {
   submit: function() {
     this.errors = [];
-    if (this.name && this.media && this.desc && this.link) {
-      return true;
+    if (this.name && this.media && this.price, this.desc) {
+      let success = services.createItem({
+          price: this.price,
+          name: this.name,
+          desc: this.desc,
+          tokenUri: 'https://storage.opensea.io/static/promocards/fashion-promocard.jpeg'
+        });
+      console.log(success);
+      this.$router.push('/');
     }
 
     if (!this.name && !this.errors.includes(NAME_ERROR))

@@ -48,7 +48,7 @@ export default {
         return data;
     },
 
-    // token listed
+    // token listed/created tokens
     async getMyListItems() {
         // let n =1;
         let data = await contract.Market_Instance.methods.fetchItemsListed().call();
@@ -70,24 +70,30 @@ export default {
     },
 
     // mint a nft token (/create page)
-    async createItem(tokenUrl) {
-        tokenUrl='https://www.myothertokenlocation22.com';// need to change to inpout
-        let price = ethers.utils.parseUnits('0.000000001', 'ether');
+    async createItem(nft) {
+        try {
+            console.log(nft.price);
+            let price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
+            console.log(price);
+            let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
+            listingPrice = listingPrice.toString();
+            console.log(listingPrice);
 
-        let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
-        listingPrice = listingPrice.toString();
-        console.log(listingPrice);
-
-        let reponse = await contract.Market_Instance.methods.createToken(tokenUrl, price).sendBlock({
-            from: store.state.dapp.account,
-            amount: listingPrice,// change to listingprice
-            password:'12345678',//need user input
-            gas_price: '20000000000',
-            gas:'2000000',
-        }, function(error, transactionHash){
-            console.log(error, transactionHash);
-        });
-        console.log(reponse);
+            let reponse = await contract.Market_Instance.methods.createToken(nft.tokenUri, price).sendBlock({
+                from: store.state.dapp.account,
+                amount: listingPrice,
+                password:'12345678',//need change to user input
+                gas_price: '20000000000',
+                gas:'2000000',
+            }, function(error, transactionHash){
+                console.log(error, transactionHash);
+            });
+            console.log(reponse);
+            return true;
+        } catch (err) {
+            console.error(err.toString());
+            return false;
+        }
 
         // const START_BLOCK=0
         // await contract.NFT_Instance.getPastEvents('AllEvents', {                               
