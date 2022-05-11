@@ -30,7 +30,7 @@ const routes = [
     name: 'explore-nft',
   },
   {
-    path: '/mycollection/:account',
+    path: '/mycollection',
     component: ProfilePage,
     name: 'my-collection',
   },

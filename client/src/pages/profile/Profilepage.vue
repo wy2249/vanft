@@ -43,7 +43,7 @@
 import { buttonsConfig } from './constants';
 
 import services from "@/api";
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 
 export default{
     data() {
@@ -73,9 +73,10 @@ export default{
       }
     },
     beforeMount() {
-      const route = useRoute()
-      this.account=route.params.account;
-      console.log("account: ", this.account);
+      // const route = useRoute()
+      // this.account=route.params.account;
+      console.log("account: ", this.$store.state.dapp);
+      this.account=this.$store.state.dapp.account;
       if (!this.account){
         alert("You need to connect to your ale account");
         this.$router.push('/');

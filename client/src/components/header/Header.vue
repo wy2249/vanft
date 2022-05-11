@@ -29,10 +29,10 @@
       Connect Ale
     </button>
     
-    <router-link :to="`/mycollection/${account}`">
-    <a v-show="isConnected" id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
+    <router-link :to="`/mycollection`">
+    <button v-show="isConnected" id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       {{account.slice(0,7)}}...{{account.slice(-4)}}
-    </a>
+    </button>
     </router-link>
 
     <!-- <button v-show="isConnected" @click="createnft">create nft</button>
