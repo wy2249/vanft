@@ -32,7 +32,10 @@ export default {
     // retrieve items that a user has purchased
     async getMyBoughtItems() {
         // let n =1;
-        let data = await contract.Market_Instance.methods.fetchMyNFTs().call();
+        let data = await contract.Market_Instance.methods.fetchMyNFTs().call({
+            from: store.state.dapp.account
+        }
+        );
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
@@ -54,8 +57,9 @@ export default {
 
     // token listed/created tokens
     async getMyListItems() {
-        // let n =1;
-        let data = await contract.Market_Instance.methods.fetchItemsListed().call();
+        let data = await contract.Market_Instance.methods.fetchItemsListed().call({
+            from: store.state.dapp.account
+        });
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();

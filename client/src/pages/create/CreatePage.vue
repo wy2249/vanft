@@ -1,7 +1,7 @@
 <template>
   <div className="w-full px-32">
-    <div className="w-full flex flex-col">
-      <h1 className="py-5 text-gray-900 font-bold text-4xl">
+    <div className="flex justify-center items-center flex-col">
+      <h1 className="text-4xl text-emerald-900 font-bold py-5 my-50">
         Create New Item
       </h1>
       <Form />
