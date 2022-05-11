@@ -32,6 +32,11 @@
       {{account.slice(0,7)}}...{{account.slice(-4)}}
     </button>
     <button v-show="isConnected" @click="createnft">create nft</button>
+    <button v-show="isConnected" @click="buynft">buy nft</button>
+    <button v-show="isConnected" @click="listnft">list nft</button>
+    <button v-show="isConnected" @click="listmynft">list my nft</button>
+    <button v-show="isConnected" @click="resellnft">sell my nft</button>
+  
   </nav>
 </template>
 
@@ -72,10 +77,46 @@ export default{
       createnft() {
         if (this.isConnected){
           services.createItem("www.sample.com");
-          // services.createItem(this.account, "www.sample.com");
-          // services.getItems().then(res => {
-          //   console.log(res);
-          // });
+        }
+      },
+      listnft() {
+        if (this.isConnected){
+          services.getItems();
+        }
+      },
+      listmynft() {
+        if (this.isConnected){
+          services.getMyListItems();
+        }
+      },
+      buynft() {
+        if (this.isConnected){
+          services.buyItem(
+            {
+              owner: "0x2313c27fb330Ae511366aB95f917B3D520BADa79",
+              price: "1000000000",
+              seller: "0x96C4a6b3428A1dD9771dEFFf1280dB1Ad013F65A",
+              sold: false,
+              tokenId: "1",
+              tokenUri: "https://www.mytokenlocation.com"
+            },
+            1000000000
+          );
+        }
+      },
+      resellnft() {
+        if (this.isConnected){
+          services.resellItem(
+            {
+              owner: "0x2313c27fb330Ae511366aB95f917B3D520BADa79",
+              price: "1000000000",
+              seller: "0x96C4a6b3428A1dD9771dEFFf1280dB1Ad013F65A",
+              sold: false,
+              tokenId: "1",
+              tokenUri: "https://www.mytokenlocation.com"
+            },
+            0.000000001
+          );
         }
       }
       // approveMoney() {
