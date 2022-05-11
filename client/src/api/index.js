@@ -1,5 +1,5 @@
 import contract from '../contract';
-// import axios from 'axios';
+import axios from 'axios';
 import { ethers } from 'ethers';
 import store from '../store'
 // import Big from 'bignumber.js'
@@ -14,6 +14,7 @@ export default {
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+            const meta = await axios.get(tokenUri);
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
@@ -22,7 +23,7 @@ export default {
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
-                tokenUri,
+                tokenUri: meta.data.image,
             }
             console.log(item);
             return item;
@@ -33,6 +34,7 @@ export default {
     async getOneItem(id) {
         let i = await contract.Market_Instance.methods.fetchOneItem(id).call();
         let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+        const meta = await axios.get(tokenUri);
         let item = {
             price: i.price.toString(),
             tokenId: i.tokenId.toString(),
@@ -41,7 +43,7 @@ export default {
             seller: i.seller,
             owner: i.owner,
             sold: i.sold,
-            tokenUri,
+            tokenUri: meta.data.image,
         }
         console.log(item);
         return item;
@@ -57,6 +59,7 @@ export default {
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+            const meta = await axios.get(tokenUri);
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
@@ -65,7 +68,7 @@ export default {
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
-                tokenUri,
+                tokenUri: meta.data.image,
             }
             console.log(item);
             return item;
@@ -82,6 +85,7 @@ export default {
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+            const meta = await axios.get(tokenUri);
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
@@ -90,9 +94,8 @@ export default {
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
-                tokenUri,
+                tokenUri: meta.data.image,
             }
-            console.log(item);
             return item;
         }));
         console.log(data);
