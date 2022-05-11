@@ -74,9 +74,7 @@ export default {
 
     // token listed/created tokens
     async getMyListItems() {
-        let data = await contract.Market_Instance.methods.fetchItemsListed().call({
-            from: store.state.dapp.account
-        });
+        let data = await contract.Market_Instance.methods.fetchItemsListed().call();
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
@@ -119,14 +117,6 @@ export default {
         });
         console.log(response);
         return [1, response];
-
-        // const START_BLOCK=0
-        // await contract.NFT_Instance.getPastEvents('AllEvents', {                               
-        //     fromBlock: START_BLOCK,     
-        //     toBlock: 'latest'
-        // }).then((data) => {
-        //     console.log(data);
-        // });
     },
 
     // buy token on market (/explore page)
@@ -145,10 +135,11 @@ export default {
             gas:'2000000',
         }, function(error, transactionHash){
             console.log(error, transactionHash);
-            return [0, error]
+            if(error)
+                return [0, error];
         });
         console.log(reponse);
-        return [1,""]
+        return [1,reponse];
     },
 
     // buy token on market (/explore page)
@@ -166,8 +157,14 @@ export default {
             gas:'2000000',
         }, function(error, transactionHash){
             console.log(error, transactionHash);
+            if(error)
+                return [0, error];
         });
-        console.log(reponse);
+        return [1,reponse];
+    },
+
+    getAccount(){
+        return store.state.dapp.account;
     },
 
 }

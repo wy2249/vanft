@@ -19,7 +19,7 @@
         <h5
           class="w-12/12 py-5 text-right text-slate-600 text-1xl py-2 font-small tracking-wider"
         >
-          Seller: {{nft.seller.slice(0,7)}}..{{nft.owner.slice(-4)}}
+          Seller: {{nft.seller.slice(0,7)}}..{{nft.seller.slice(-4)}}
         </h5>
         <h5
           class="w-12/12 py-5 text-right text-slate-600 text-1xl py-2 font-small tracking-wider"
@@ -28,10 +28,12 @@
         </h5>
         
         <div class="py-5 flex justify-end">
-            <button
-              @click="buynft" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button"
-            >
+            <button v-show="!isOwner" @click="buyNFT" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
               Buy
+            </button>
+
+            <button v-show="isOwner" @click="resellNFT" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
+              Resell
             </button>
       </div>
     </div>
@@ -50,9 +52,10 @@ export default{
         id: 0,
         nft: {},
         loaded: false,
+        isOwner: false,
+        isSeller: false,
       };
     },
-
     methods: {
       async loadNFTs() {
         console.log(this.id);
@@ -61,7 +64,7 @@ export default{
         this.loaded = true;
       },
 
-      async buynft() {
+      async buyNFT() {
         let reponse = await services.buyItem(
             this.nft,
             this.nft.price // need to change to input
@@ -74,6 +77,34 @@ export default{
           alert("transaction failed: "+reponse[1]);
           this.$router.go();
         }
+      },
+
+      async resellNFT() {
+        let reponse = await services.resellItem(
+            this.nft,
+            this.nft.price // need to change to input
+          );
+        console.log(reponse);
+        if(reponse[0]==1){
+          alert("success!");
+          this.$router.push("/mycollection");
+        } else {
+          alert("transaction failed: "+reponse[1]);
+          this.$router.go();
+        }
+      },
+
+      checkOwner() {
+        let account = services.getAccount();
+        console.log("cheking if onwer is account");
+        console.log(account, account==this.nft.owner);
+        return account==this.nft.owner;
+      },
+
+      checkSeller() {
+        let account = services.getAccount();
+        console.log("cheking if seller is account");
+        return account==this.nft.seller;
       }
     },
     beforeMount() {
@@ -81,6 +112,10 @@ export default{
       this.id=route.params.id;
       console.log(this.id);
       this.loadNFTs();
+    },
+    mounted() {
+      this.isOwner = this.checkOwner();
+      this.isSeller = this.checkSeller();
     }
 
   };
