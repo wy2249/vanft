@@ -39,7 +39,7 @@
     </div>
 
   <div>
-  <form>
+  <div>
     <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2"
             >Description</label
@@ -47,17 +47,17 @@
           <textarea
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
-            v-model="desc"
+            v-model="new_desc"
           />
         </div>
 
     <button
-          @click.prevent="submit"
+          @click="createNewVersion"
           class="mt-2 bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
         >
           Submit
         </button>
-  </form>
+  </div>
 </div>
   </div>
 
@@ -114,11 +114,13 @@ export default{
       },
 
       async createNewVersion() {
-        if (this.new_version && this.new_desc) {
+        console.log('button submit')
+        if (this.new_version && this.new_version) {
           let data = JSON.stringify({
             desc: this.desc, 
             image: this.new_version
           })
+          console.log(data);
 
           // create metadata for this new version
           const added = await client.add(data)

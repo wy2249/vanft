@@ -196,6 +196,12 @@ export default {
     // new version is also a url of file on ipfs, but it's NOT tokenuri
     async addNewVersion(tokenId, newVersions) {
         try {
+            let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
+            listingPrice = listingPrice.toString();
+            console.log(listingPrice);
+            
+            console.log("new versions", newVersions);
+
             let response = await contract.Market_Instance.methods.appendVersion(tokenId, newVersions).sendBlock({
                 from: store.state.dapp.account,
                 amount: listingPrice,

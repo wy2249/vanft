@@ -57,6 +57,7 @@ contract NFTMarketplace is ERC721URIStorage {
     function appendVersion(uint256 tokenId, string memory new_versions) public payable {
       require(idToMarketItem[tokenId].owner == msg.sender, "Only item owner can perform this operation");
       idToMarketItem[tokenId].versions = new_versions;
+      _transfer(msg.sender, msg.sender, tokenId);
       emit Print(idToMarketItem[tokenId].versions);
     }
 
