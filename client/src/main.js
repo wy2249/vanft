@@ -34,6 +34,5 @@ const router = createRouter({
   routes,
   mode: 'history',
 });
-
 app.use(router);
 app.mount('#app');

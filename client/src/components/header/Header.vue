@@ -3,13 +3,13 @@
     class="bg-white sticky top-0 z-50 px-4 py-5 items-center flex justify-between text-black"
   >
     <router-link to="/">
-      <div class="cursor-pointer flex lg:w-4/12 relative">
+      <div class="cursor-pointer flex lg:w-4/12 ">
         <img
           class="w-full"
           src="/logo.png"
           alt=“Logo“
         />
-        <span class="uppercase py-4 px-4 font-bold text-3xl justify-center lg:flex"> VANFT </span>
+        <span class="uppercase py-4 px-4 font-bold text-3xl text-center"> VANFT </span>
       </div>
     </router-link>
 
@@ -28,9 +28,11 @@
     <button v-show="!isConnected" @click="connect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       Connect Ale
     </button>
-    <button v-show="isConnected" @click="disconnect" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
+    
+    <a v-show="isConnected" href='/profile' id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       {{account.slice(0,7)}}...{{account.slice(-4)}}
-    </button>
+    </a>
+
     <button v-show="isConnected" @click="createnft">create nft</button>
     <button v-show="isConnected" @click="buynft">buy nft</button>
     <button v-show="isConnected" @click="listnft">list nft</button>

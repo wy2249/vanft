@@ -36,7 +36,7 @@ Form.methods = {
           tokenUri: 'https://storage.opensea.io/static/promocards/fashion-promocard.jpeg'
         });
       console.log(success);
-      this.$router.push('/');
+      this.$router.push('/explore');
     }
 
     if (!this.name && !this.errors.includes(NAME_ERROR))

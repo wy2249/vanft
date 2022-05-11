@@ -23,6 +23,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
     "axios": "^0.27.2",
-    "dotenv": "^14.2.0"
+    "dotenv": "^14.2.0",
+    "vue-sweetalert2": "^5.0.5"
   }
 }

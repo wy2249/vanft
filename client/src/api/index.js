@@ -16,6 +16,8 @@ export default {
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
+                name: i.name,
+                desc: i.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
@@ -37,6 +39,8 @@ export default {
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
+                name: i.name,
+                desc: i.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
@@ -58,6 +62,8 @@ export default {
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
+                name: i.name,
+                desc: i.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
@@ -79,7 +85,7 @@ export default {
             listingPrice = listingPrice.toString();
             console.log(listingPrice);
 
-            let reponse = await contract.Market_Instance.methods.createToken(nft.tokenUri, price).sendBlock({
+            let reponse = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.name, nft.desc).sendBlock({
                 from: store.state.dapp.account,
                 amount: listingPrice,
                 password:'12345678',//need change to user input
