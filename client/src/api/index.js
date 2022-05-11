@@ -29,6 +29,23 @@ export default {
         return data;
     },
 
+    async getOneItem(id) {
+        let i = await contract.Market_Instance.methods.fetchOneItem(id).call();
+        let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+        let item = {
+            price: i.price.toString(),
+            tokenId: i.tokenId.toString(),
+            name: i.name,
+            desc: i.desc,
+            seller: i.seller,
+            owner: i.owner,
+            sold: i.sold,
+            tokenUri,
+        }
+        console.log(item);
+        return item;
+    },
+
     // retrieve items that a user has purchased
     async getMyBoughtItems() {
         // let n =1;
@@ -81,29 +98,27 @@ export default {
 
     // mint a nft token (/create page)
     async createItem(nft) {
-        try {
-            console.log(nft.price);
-            let price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
-            console.log(price);
-            let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
-            listingPrice = listingPrice.toString();
-            console.log(listingPrice);
+        console.log(nft.price);
+        let price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
+        console.log(price);
+        
+        let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
+        listingPrice = listingPrice.toString();
+        console.log(listingPrice);
 
-            let reponse = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.name, nft.desc).sendBlock({
-                from: store.state.dapp.account,
-                amount: listingPrice,
-                password:'12345678',//need change to user input
-                gas_price: '20000000000',
-                gas:'2000000',
-            }, function(error, transactionHash){
-                console.log(error, transactionHash);
-            });
-            console.log(reponse);
-            return true;
-        } catch (err) {
-            console.error(err.toString());
-            return false;
-        }
+        let response = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.name, nft.desc).sendBlock({
+            from: store.state.dapp.account,
+            amount: listingPrice,
+            password:'12345678',//need change to user input
+            gas_price: '20000000000',
+            gas:'2000000',
+        }, function(error, transactionHash){
+            console.log(error, transactionHash);
+            if(error)
+                return [0, error];
+        });
+        console.log(response);
+        return [1, response];
 
         // const START_BLOCK=0
         // await contract.NFT_Instance.getPastEvents('AllEvents', {                               
@@ -116,6 +131,10 @@ export default {
 
     // buy token on market (/explore page)
     async buyItem(token, price) {
+        if(token.seller==store.state.dapp.account) {
+            console.log("cannot your own token");
+            return [0, "cannot your own token"];
+        }
         console.log(price);
         //price = ethers.utils.parseUnits(price.toString(), 'ether')   
         let reponse = await contract.Market_Instance.methods.createMarketSale(token.tokenId).sendBlock({
@@ -126,8 +145,10 @@ export default {
             gas:'2000000',
         }, function(error, transactionHash){
             console.log(error, transactionHash);
+            return [0, error]
         });
         console.log(reponse);
+        return [1,""]
     },
 
     // buy token on market (/explore page)

@@ -26,17 +26,23 @@ Form.data = () => ({
 });
 
 Form.methods = {
-  submit: function() {
+  submit: async function() {
     this.errors = [];
     if (this.name && this.media && this.price, this.desc) {
-      let success = services.createItem({
+      let reponse = await services.createItem({
           price: this.price,
           name: this.name,
           desc: this.desc,
           tokenUri: 'https://storage.opensea.io/static/promocards/fashion-promocard.jpeg'
         });
-      console.log(success);
-      this.$router.push('/explore');
+      console.log(reponse);
+        if(reponse[0]==1){
+          alert("success!");
+          this.$router.push("/mycollection");
+        } else {
+          alert("transaction failed: "+reponse[1]);
+          this.$router.go();
+        }
     }
 
     if (!this.name && !this.errors.includes(NAME_ERROR))
