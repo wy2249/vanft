@@ -43,11 +43,13 @@
 import { buttonsConfig } from './constants';
 
 import services from "@/api";
+import { useRoute } from 'vue-router';
 
 export default{
     data() {
       return {
         buttonsConfig: buttonsConfig,
+        account: "",
         listed_nfts: [],
         bought_nfts: [],
         loaded: false,
@@ -59,16 +61,32 @@ export default{
 
     methods: {
       async loadNFTs() {
-        console.log("loading profile nfts...")
-        this.listed_nfts = await services.getMyListItems();
-        console.log(this.listed_nfts);
-        this.bought_nfts = await services.getMyBoughtItems();
+        console.log("loading bought nfts (owner is account)...")
+        this.bought_nfts = await services.getMyBoughtItems(this.account);
         console.log(this.bought_nfts);
+
+        console.log("loading listed nfts (seller is account)...")
+        this.listed_nfts = await services.getMyListItems(this.account);
+        console.log(this.listed_nfts);
+
         this.loaded = true;
       }
     },
     beforeMount() {
-        this.loadNFTs();
+      const route = useRoute()
+      this.account=route.params.account;
+      console.log("account: ", this.account);
+      if (!this.account){
+        alert("You need to connect to your ale account");
+        this.$router.push('/');
+      }
+      this.loadNFTs();
+    },
+    mounted() {
+      console.log(this.$store.state.dapp.account,this.account);
+      // if(this.$store.state.dapp.account!=this.account) {
+      //   alert("invalid: no permission to view this account");
+      // }
     }
 
   };

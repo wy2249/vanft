@@ -6,7 +6,7 @@ export default createStore({
     dapp: {
         isAle: false,
         isAleEnabled: false,
-        networkId: 3,
+        networkId: 4,
         account: "",
         isConnected: false,
         count: 0,

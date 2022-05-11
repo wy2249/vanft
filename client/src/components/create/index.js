@@ -38,7 +38,7 @@ Form.methods = {
       console.log(reponse);
         if(reponse[0]==1){
           alert("success!");
-          this.$router.push("/mycollection");
+          this.$router.push("/mycollection"+this.$store.state.dapp.account);
         } else {
           alert("transaction failed: "+reponse[1]);
           this.$router.go();

@@ -6,19 +6,13 @@
 
     <div class="w-4/12 text-left flex flex-col px-1 my-10">
       <!-- <h1 className="text-4xl text-emerald-900 font-bold py-5 my-50">nft.name</h1> -->
-      <h1
-          class="w-12/12 py-5 text-left text-6xl py-2 font-bold tracking-wider	uppercase"
-        >
+      <h1 class="w-12/12 py-5 text-left text-6xl py-2 font-bold tracking-wider	uppercase">
           {{nft.name}}
         </h1>
-        <h3
-          class="w-12/12 py-5 text-left text-2xl py-2 my-30 font-medium tracking-wider"
-        >
+        <h3 class="w-12/12 py-5 text-left text-2xl py-2 my-30 font-medium tracking-wider">
           {{nft.desc}}
         </h3>
-        <h5
-          class="w-12/12 py-5 text-right text-slate-600 text-1xl py-2 font-small tracking-wider"
-        >
+        <h5 class="w-12/12 py-5 text-right text-slate-600 text-1xl py-2 font-small tracking-wider">
           Seller: {{nft.seller.slice(0,7)}}..{{nft.seller.slice(-4)}}
         </h5>
         <h5

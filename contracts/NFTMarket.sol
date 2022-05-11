@@ -37,6 +37,8 @@ contract NFTMarketplace is ERC721URIStorage {
       bool sold
     );
 
+    event Print (address addr);
+
     constructor() ERC721("Metaverse Tokens", "METT") {
       owner = payable(msg.sender);
     }
@@ -169,6 +171,10 @@ contract NFTMarketplace is ERC721URIStorage {
         }
       }
       return items;
+    }
+
+    function getSender() public {
+      emit Print(msg.sender);
     }
 
     /* Returns only items a user has listed */
