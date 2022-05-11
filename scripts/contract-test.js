@@ -17,8 +17,8 @@ async function main() {
     let listingPrice = await market.getListingPrice();
     listingPrice = listingPrice.toString();
     const auctionPrice = ethers.utils.parseUnits('0.000000001', 'ether');
-    let t1 = await market.createToken("https://www.mytokenlocation.com", auctionPrice, {value: listingPrice});
-    let t2 = await market.createToken("https://www.myothertokenlocation.com", auctionPrice, {value: listingPrice});
+    let t1 = await market.createToken("https://ipfs.infura.io/ipfs/QmQa98JGcFLxnmTTQhvQbCZSnNphQ4ims8ugxmA8SHA6MY", auctionPrice, "https://ipfs.infura.io/ipfs/QmQa98JGcFLxnmTTQhvQbCZSnNphQ4ims8ugxmA8SHA6MY", {value: listingPrice});
+    let t2 = await market.createToken("https://ipfs.infura.io/ipfs/QmfTdRJJ31RYYgBzYtPYrxMiFesH146MYhHVWUb7WNiRLu", auctionPrice, "https://ipfs.infura.io/ipfs/QmfTdRJJ31RYYgBzYtPYrxMiFesH146MYhHVWUb7WNiRLu", {value: listingPrice});
     console.log(t1);
     console.log(t2);
 
@@ -37,27 +37,27 @@ async function main() {
       console.log(item);
     }));
 
-    const signers = await ethers.getSigners()
-    /* execute sale of token to another user */
-    await market.connect(signers[0]).createMarketSale(1, { value: auctionPrice })
+    // const signers = await ethers.getSigners()
+    // /* execute sale of token to another user */
+    // await market.connect(signers[0]).createMarketSale(1, { value: auctionPrice })
 
-    /* resell a token */
-    await market.connect(signers[0]).resellToken(1, auctionPrice, { value: listingPrice })
+    // /* resell a token */
+    // await market.connect(signers[0]).resellToken(1, auctionPrice, { value: listingPrice })
 
-    /* query for and return the unsold items */
-    items = await market.fetchMarketItems()
-    items = await Promise.all(items.map(async i => {
-      const tokenUri = await market.tokenURI(i.tokenId)
-      let item = {
-        price: i.price.toString(),
-        tokenId: i.tokenId.toString(),
-        seller: i.seller,
-        owner: i.owner,
-        tokenUri
-      }
-      return item
-    }))
-    console.log('items: ', items)
+    // /* query for and return the unsold items */
+    // items = await market.fetchMarketItems()
+    // items = await Promise.all(items.map(async i => {
+    //   const tokenUri = await market.tokenURI(i.tokenId)
+    //   let item = {
+    //     price: i.price.toString(),
+    //     tokenId: i.tokenId.toString(),
+    //     seller: i.seller,
+    //     owner: i.owner,
+    //     tokenUri
+    //   }
+    //   return item
+    // }))
+    // console.log('items: ', items)
 
 }
 

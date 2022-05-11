@@ -21,7 +21,7 @@
           Price: {{nft.price}}
         </h5>
         
-        <div class="py-5 flex justify-end">
+        <div class="py-5 flex justify-between w-8/12 justify-end">
             <button v-show="!isOwner" @click="buyNFT" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
               Buy
             </button>
@@ -29,6 +29,13 @@
             <button v-show="isOwner" @click="resellNFT" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
               Resell
             </button>
+
+            <router-link :to="`/canvas/${id}`">
+            <button v-show="!isOwner" @click="createNewVersion" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
+              Create Version
+            </button>
+            </router-link>
+
       </div>
     </div>
   </section>
@@ -99,7 +106,8 @@ export default{
         let account = services.getAccount();
         console.log("cheking if seller is account");
         return account==this.nft.seller;
-      }
+      },
+
     },
     beforeMount() {
       const route = useRoute()

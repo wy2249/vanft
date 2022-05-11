@@ -24,6 +24,7 @@ export default {
                 owner: i.owner,
                 sold: i.sold,
                 tokenUri: meta.data.image,
+                versions: i.versions
             }
             console.log(item);
             return item;
@@ -44,6 +45,7 @@ export default {
             owner: i.owner,
             sold: i.sold,
             tokenUri: meta.data.image,
+            versions: i.versions
         }
         console.log(item);
         return item;
@@ -69,6 +71,7 @@ export default {
                 owner: i.owner,
                 sold: i.sold,
                 tokenUri: meta.data.image,
+                versions: i.versions
             }
             console.log(item);
             return item;
@@ -95,6 +98,7 @@ export default {
                 owner: i.owner,
                 sold: i.sold,
                 tokenUri: meta.data.image,
+                versions: i.versions
             }
             return item;
         }));
@@ -114,7 +118,7 @@ export default {
             listingPrice = listingPrice.toString();
             console.log(listingPrice);
 
-            let response = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, '').sendBlock({
+            let response = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.tokenUri).sendBlock({
                 from: store.state.dapp.account,
                 amount: listingPrice,
                 password:'12345678',//need change to user input
@@ -190,9 +194,9 @@ export default {
 
     // owner can add new version based on previous versions, but this WON'T change CID of nft
     // new version is also a url of file on ipfs, but it's NOT tokenuri
-    async addNewVersion(nft, newVersion) {
+    async addNewVersion(tokenId, newVersions) {
         try {
-            let response = await contract.Market_Instance.methods.appendVersion(nft.tokenId, nft.versions+' '+newVersion).sendBlock({
+            let response = await contract.Market_Instance.methods.appendVersion(tokenId, newVersions).sendBlock({
                 from: store.state.dapp.account,
                 amount: listingPrice,
                 password:'12345678',//need change to user input

@@ -7,6 +7,7 @@ import Homepage from './pages/homepage/Homepage.vue';
 import ExplorePage from './pages/explore/Explorepage.vue';
 import ProfilePage from './pages/profile/Profilepage.vue';
 import NFTPage from './pages/nft/Nft.vue';
+import CanvasPage from './pages/canvas/canvas.vue';
 import CreatePage from './pages/create';
 
 const app = createApp(App);
@@ -38,6 +39,11 @@ const routes = [
     path: "/nft/:id",
     component: NFTPage,
     name: 'nft',
+  },
+  {
+    path: "/canvas/:id",
+    component: CanvasPage,
+    name: 'canvas',
   },
 ];
 
