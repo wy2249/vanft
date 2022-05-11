@@ -29,7 +29,7 @@
       Connect Ale
     </button>
     
-    <a v-show="isConnected" href='/profile' id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
+    <a v-show="isConnected" href='/mycollection' id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       {{account.slice(0,7)}}...{{account.slice(-4)}}
     </a>
 

@@ -3,6 +3,7 @@
     <h1 className="text-4xl text-emerald-900 font-bold py-5 my-50">Explore Collections</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 flex mx-24">
                 <div v-for="(nft, i) in nfts" :key="i">
+                  <router-link :to="`/nft/${nft.tokenId}`">
                     <div className="border shadow rounded-xl overflow-hidden">
                       <img v-bind:src="nft.tokenUri" className="rounded" />
                       <div className="p-10 bg-white">
@@ -10,6 +11,7 @@
                         <h5 >{{nft.desc}} </h5>
                       </div>
                     </div>
+                    </router-link>
                 </div>
       </div>
 </div>
@@ -40,6 +42,9 @@ export default{
         this.nfts = await services.getItems();
         console.log(this.nfts);
         this.loaded = true;
+      },
+      link(id) {
+        return '/nft/' + id;
       }
     },
     beforeMount() {

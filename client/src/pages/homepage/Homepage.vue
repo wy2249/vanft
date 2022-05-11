@@ -13,7 +13,7 @@
         Version-enabled Art NFTs
       </h2>
 
-      <div class="py-5 flex justify-between w-6/12">
+      <div class="py-5 flex justify-between w-8/12">
         <div v-for="button in buttonsConfig" :key="button.title">
           <router-link :to="button.path">
             <button
@@ -27,7 +27,7 @@
 
     </div>
 
-    <div class="w-6/12 my-5">
+    <div class="w-4/12 my-5">
       <img
         src="https://lh3.googleusercontent.com/J734DD96jgdCHK95vKF1lb1sGn2qyxRIo2wF7pDYN3rEoQqZSBTHH2tRecaxgFCux-oIZcJAZSsVYY9xaGhSIZwpkQlh3R6YHf8w=s550"
       />
