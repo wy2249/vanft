@@ -6,6 +6,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Homepage from './pages/homepage/Homepage.vue';
 import ExplorePage from './pages/explore/Explorepage.vue';
 import ProfilePage from './pages/profile/Profilepage.vue';
+import NFTPage from './pages/nft/Nft.vue';
 import CreatePage from './pages/create';
 
 const app = createApp(App);
@@ -32,6 +33,11 @@ const routes = [
     path: '/profile',
     component: ProfilePage,
     name: 'my-collection',
+  },
+  {
+    path: "/nft/:id",
+    component: NFTPage,
+    name: 'nft',
   },
 ];
 
