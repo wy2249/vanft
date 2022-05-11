@@ -18,8 +18,8 @@ export default {
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
-                name: i.name,
-                desc: i.desc,
+                name: meta.data.name,
+                desc: meta.data.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
@@ -38,8 +38,8 @@ export default {
         let item = {
             price: i.price.toString(),
             tokenId: i.tokenId.toString(),
-            name: i.name,
-            desc: i.desc,
+            name: meta.data.name,
+            desc: meta.data.desc,
             seller: i.seller,
             owner: i.owner,
             sold: i.sold,
@@ -63,8 +63,8 @@ export default {
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
-                name: i.name,
-                desc: i.desc,
+                name: meta.data.name,
+                desc: meta.data.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
@@ -89,8 +89,8 @@ export default {
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
-                name: i.name,
-                desc: i.desc,
+                name: meta.data.name,
+                desc: meta.data.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
@@ -114,7 +114,7 @@ export default {
             listingPrice = listingPrice.toString();
             console.log(listingPrice);
 
-            let response = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.name, nft.desc).sendBlock({
+            let response = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, '').sendBlock({
                 from: store.state.dapp.account,
                 amount: listingPrice,
                 password:'12345678',//need change to user input
@@ -182,6 +182,29 @@ export default {
                     return [0, error];
             });
             return [1,reponse];
+        } catch (error) {
+            console.log(error);
+            return [0, error];
+        }
+    },
+
+    // owner can add new version based on previous versions, but this WON'T change CID of nft
+    // new version is also a url of file on ipfs, but it's NOT tokenuri
+    async addNewVersion(nft, newVersion) {
+        try {
+            let response = await contract.Market_Instance.methods.appendVersion(nft.tokenId, nft.versions+' '+newVersion).sendBlock({
+                from: store.state.dapp.account,
+                amount: listingPrice,
+                password:'12345678',//need change to user input
+                gas_price: '20000000000',
+                gas:'2000000',
+            }, function(error, transactionHash){
+                console.log(error, transactionHash);
+                if(error)
+                    return [0, error];
+            });
+            console.log(response);
+            return [1, response];
         } catch (error) {
             console.log(error);
             return [0, error];
