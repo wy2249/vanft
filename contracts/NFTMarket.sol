@@ -22,8 +22,7 @@ contract NFTMarketplace is ERC721URIStorage {
       address payable seller;
       address payable owner;
       uint256 price;
-      string name;
-      string desc;
+      string versions;
       bool sold;
     }
 
@@ -32,10 +31,12 @@ contract NFTMarketplace is ERC721URIStorage {
       address seller,
       address owner,
       uint256 price,
-      string name,
-      string desc,
+      string versions,
       bool sold
     );
+
+    event Print (address addr);
+    event Print (string s);
 
     constructor() ERC721("Metaverse Tokens", "METT") {
       owner = payable(msg.sender);
@@ -52,22 +53,29 @@ contract NFTMarketplace is ERC721URIStorage {
       return listingPrice;
     }
 
+    /* Append versions to nft */
+    function appendVersion(uint256 tokenId, string memory new_versions) public payable {
+      require(idToMarketItem[tokenId].owner == msg.sender, "Only item owner can perform this operation");
+      idToMarketItem[tokenId].versions = new_versions;
+      _transfer(msg.sender, msg.sender, tokenId);
+      emit Print(idToMarketItem[tokenId].versions);
+    }
+
     /* Mints a token and lists it in the marketplace */
-    function createToken(string memory tokenURI, uint256 price, string memory name, string memory desc) public payable returns (uint) {
+    function createToken(string memory tokenURI, uint256 price, string memory versions) public payable returns (uint) {
       _tokenIds.increment();
       uint256 newTokenId = _tokenIds.current();
 
       _mint(msg.sender, newTokenId);
       _setTokenURI(newTokenId, tokenURI);
-      createMarketItem(newTokenId, price, name, desc);
+      createMarketItem(newTokenId, price, versions);
       return newTokenId;
     }
 
     function createMarketItem(
       uint256 tokenId,
       uint256 price, 
-      string memory name, 
-      string memory desc
+      string memory versions
     ) private {
       require(price > 0, "Price must be at least 1 wei");
       require(msg.value == listingPrice, "Price must be equal to listing price");
@@ -77,8 +85,7 @@ contract NFTMarketplace is ERC721URIStorage {
         payable(msg.sender),
         payable(address(this)),
         price,
-        name,
-        desc,
+        versions,
         false
       );
 
@@ -88,8 +95,7 @@ contract NFTMarketplace is ERC721URIStorage {
         msg.sender,
         address(this),
         price,
-        name,
-        desc,
+        versions,
         false
       );
     }
@@ -142,6 +148,11 @@ contract NFTMarketplace is ERC721URIStorage {
       return items;
     }
 
+    /* Returns all unsold market items */
+    function fetchOneItem(uint256 tokenId) public view returns (MarketItem memory) {
+      return idToMarketItem[tokenId];
+    }
+
     /* Returns only items that a user has purchased */
     function fetchMyNFTs() public view returns (MarketItem[] memory) {
       uint totalItemCount = _tokenIds.current();
@@ -164,6 +175,10 @@ contract NFTMarketplace is ERC721URIStorage {
         }
       }
       return items;
+    }
+
+    function getSender() public {
+      emit Print(msg.sender);
     }
 
     /* Returns only items a user has listed */

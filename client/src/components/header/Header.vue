@@ -29,9 +29,11 @@
       Connect Ale
     </button>
     
-    <a v-show="isConnected" href='/mycollection' id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
+    <router-link :to="`/mycollection`">
+    <button v-show="isConnected" id="dropdownDefault" data-dropdown-toggle="dropdown" class="uppercase py-4 px-4 font-bold text-lg lg:flex w-2/12 justify-center">
       {{account.slice(0,7)}}...{{account.slice(-4)}}
-    </a>
+    </button>
+    </router-link>
 
     <!-- <button v-show="isConnected" @click="createnft">create nft</button>
     <button v-show="isConnected" @click="buynft">buy nft</button>
@@ -72,10 +74,10 @@ export default{
         console.log("connecting to Ale wallet...");
         window["aleereum"] && window["aleereum"].connect();
       },
-      disconnect() {
-        console.log("disconnecting to Ale wallet...");
-        window["aleereum"] && window["aleereum"].open();
-      },
+      // disconnect() {
+      //   console.log("disconnecting to Ale wallet...");
+      //   window["aleereum"] && window["aleereum"].open();
+      // },
       // createnft() {
       //   if (this.isConnected){
       //     services.createItem("www.sample.com");

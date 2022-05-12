@@ -1,10 +1,11 @@
 import contract from '../contract';
-// import axios from 'axios';
+import axios from 'axios';
 import { ethers } from 'ethers';
 import store from '../store'
 // import Big from 'bignumber.js'
 
 export default {
+    
     // retrieve all the nft tokens on market
     // render in /explore page
     async getItems() {
@@ -13,15 +14,17 @@ export default {
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+            const meta = await axios.get(tokenUri);
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
-                name: i.name,
-                desc: i.desc,
+                name: meta.data.name,
+                desc: meta.data.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
-                tokenUri,
+                tokenUri: meta.data.image,
+                versions: i.versions
             }
             console.log(item);
             return item;
@@ -29,25 +32,46 @@ export default {
         return data;
     },
 
+    async getOneItem(id) {
+        let i = await contract.Market_Instance.methods.fetchOneItem(id).call();
+        let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+        const meta = await axios.get(tokenUri);
+        let item = {
+            price: i.price.toString(),
+            tokenId: i.tokenId.toString(),
+            name: meta.data.name,
+            desc: meta.data.desc,
+            seller: i.seller,
+            owner: i.owner,
+            sold: i.sold,
+            tokenUri: meta.data.image,
+            versions: i.versions
+        }
+        console.log(item);
+        return item;
+    },
+
     // retrieve items that a user has purchased
-    async getMyBoughtItems() {
+    async getMyBoughtItems(account) {
         // let n =1;
         let data = await contract.Market_Instance.methods.fetchMyNFTs().call({
-            from: store.state.dapp.account
+            from: account
         }
         );
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+            const meta = await axios.get(tokenUri);
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
-                name: i.name,
-                desc: i.desc,
+                name: meta.data.name,
+                desc: meta.data.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
-                tokenUri,
+                tokenUri: meta.data.image,
+                versions: i.versions
             }
             console.log(item);
             return item;
@@ -56,26 +80,30 @@ export default {
     },
 
     // token listed/created tokens
-    async getMyListItems() {
+    async getMyListItems(account) {
         let data = await contract.Market_Instance.methods.fetchItemsListed().call({
-            from: store.state.dapp.account
-        });
+            from: account
+        }
+        );
         data = await Promise.all(data.map(async i => {
             console.log(i);
             let tokenUri =  await contract.Market_Instance.methods.tokenURI(i.tokenId).call();
+            const meta = await axios.get(tokenUri);
             let item = {
                 price: i.price.toString(),
                 tokenId: i.tokenId.toString(),
-                name: i.name,
-                desc: i.desc,
+                name: meta.data.name,
+                desc: meta.data.desc,
                 seller: i.seller,
                 owner: i.owner,
                 sold: i.sold,
-                tokenUri,
+                tokenUri: meta.data.image,
+                versions: i.versions
             }
-            console.log(item);
             return item;
         }));
+        console.log(data);
+        this.printLogEvent();
         return data;
     },
 
@@ -85,11 +113,12 @@ export default {
             console.log(nft.price);
             let price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
             console.log(price);
+            
             let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
             listingPrice = listingPrice.toString();
             console.log(listingPrice);
 
-            let reponse = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.name, nft.desc).sendBlock({
+            let response = await contract.Market_Instance.methods.createToken(nft.tokenUri, price, nft.tokenUri).sendBlock({
                 from: store.state.dapp.account,
                 amount: listingPrice,
                 password:'12345678',//need change to user input
@@ -97,56 +126,117 @@ export default {
                 gas:'2000000',
             }, function(error, transactionHash){
                 console.log(error, transactionHash);
+                if(error)
+                    return [0, error];
             });
-            console.log(reponse);
-            return true;
-        } catch (err) {
-            console.error(err.toString());
-            return false;
+            console.log(response);
+            return [1, response];
+        } catch (error) {
+            console.log(error);
+            return [0, error];
         }
-
-        // const START_BLOCK=0
-        // await contract.NFT_Instance.getPastEvents('AllEvents', {                               
-        //     fromBlock: START_BLOCK,     
-        //     toBlock: 'latest'
-        // }).then((data) => {
-        //     console.log(data);
-        // });
     },
 
     // buy token on market (/explore page)
     async buyItem(token, price) {
-        console.log(price);
-        //price = ethers.utils.parseUnits(price.toString(), 'ether')   
-        let reponse = await contract.Market_Instance.methods.createMarketSale(token.tokenId).sendBlock({
-            from: store.state.dapp.account,
-            amount: token.price,
-            password:'12345678',//need user input
-            gas_price: '20000000000',
-            gas:'2000000',
-        }, function(error, transactionHash){
-            console.log(error, transactionHash);
-        });
-        console.log(reponse);
+        try {
+            if(token.seller==store.state.dapp.account) {
+                console.log("cannot buy your own token");
+                return [0, "cannot buy your own token"];
+            }
+            console.log(price);
+            //price = ethers.utils.parseUnits(price.toString(), 'ether')   
+            let reponse = await contract.Market_Instance.methods.createMarketSale(token.tokenId).sendBlock({
+                from: store.state.dapp.account,
+                amount: token.price,
+                password:'12345678',//need user input
+                gas_price: '20000000000',
+                gas:'2000000',
+            }, function(error, transactionHash){
+                console.log(error, transactionHash);
+                if(error)
+                    return [0, error];
+            });
+            console.log(reponse);
+            return [1,reponse];
+        } catch (error) {
+            console.log(error);
+            return [0, error];
+        }
+        
     },
 
     // buy token on market (/explore page)
     async resellItem(token, price) {
-        let listingPrice= await contract.Market_Instance.methods.getListingPrice().call();
-        listingPrice = listingPrice.toString();
-        console.log(listingPrice);
-        
-        price = ethers.utils.parseUnits('0.000000001', 'ether')   
-        let reponse = await contract.Market_Instance.methods.resellToken(token.tokenId, price).sendBlock({
-            from: store.state.dapp.account,
-            amount: listingPrice,
-            password:'12345678',//need user input
-            gas_price: '20000000000',
-            gas:'2000000',
-        }, function(error, transactionHash){
-            console.log(error, transactionHash);
-        });
-        console.log(reponse);
+        try {
+            let listingPrice= await contract.Market_Instance.methods.getListingPrice().call();
+            listingPrice = listingPrice.toString();
+            console.log(listingPrice);
+            
+            price = ethers.utils.parseUnits('0.000000001', 'ether')   
+            let reponse = await contract.Market_Instance.methods.resellToken(token.tokenId, price).sendBlock({
+                from: store.state.dapp.account,
+                amount: listingPrice,
+                password:'12345678',//need user input
+                gas_price: '20000000000',
+                gas:'2000000',
+            }, function(error, transactionHash){
+                console.log(error, transactionHash);
+                if(error)
+                    return [0, error];
+            });
+            return [1,reponse];
+        } catch (error) {
+            console.log(error);
+            return [0, error];
+        }
     },
+
+    // owner can add new version based on previous versions, but this WON'T change CID of nft
+    // new version is also a url of file on ipfs, but it's NOT tokenuri
+    async addNewVersion(tokenId, newVersions) {
+        try {
+            let listingPrice = await contract.Market_Instance.methods.getListingPrice().call();
+            listingPrice = listingPrice.toString();
+            console.log(listingPrice);
+            
+            console.log("new versions", newVersions);
+
+            let response = await contract.Market_Instance.methods.appendVersion(tokenId, newVersions).sendBlock({
+                from: store.state.dapp.account,
+                amount: listingPrice,
+                password:'12345678',//need change to user input
+                gas_price: '20000000000',
+                gas:'2000000',
+            }, function(error, transactionHash){
+                console.log(error, transactionHash);
+                if(error)
+                    return [0, error];
+            });
+            console.log(response);
+            return [1, response];
+        } catch (error) {
+            console.log(error);
+            return [0, error];
+        }
+    },
+
+    getAccount(){
+        return store.state.dapp.account;
+    },
+
+    // for smart contract debug
+    async printLogEvent() {
+        console.log("printing log...");
+        const START_BLOCK=0;
+        await contract.Market_Instance.getPastEvents('AllEvents', {                               
+            fromBlock: START_BLOCK,     
+            toBlock: 'latest'
+        }).then((data) => {
+            console.log(data);
+        });
+    },
+
+    
 
 }

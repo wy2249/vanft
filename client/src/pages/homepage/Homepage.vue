@@ -51,7 +51,7 @@ import { buttonsConfig } from './constants';
 
 // import NFT from '../../abis/nft.json';
 // import Market from '../../abis/market.json';
-import services from "@/api";
+// import services from "@/api";
 
 export default{
     data() {
@@ -64,13 +64,13 @@ export default{
     components: {
       Drops,
     },
-    mounted:function(){
-      this.loadNfts() //method1 will execute at pageload
-    },
+    // mounted:function(){
+    //   this.loadNfts() //method1 will execute at pageload
+    // },
     methods: {
-      loadNfts() {
-        services.getItems();
-      },
+      // loadNfts() {
+      //   services.getItems();
+      // },
       // loadNfts: async function() {
       //   console.log("load nfts...");
       //   this.isLoading = true;
