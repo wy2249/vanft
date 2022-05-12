@@ -10,7 +10,7 @@
       <h2
         class="w-8/12 py-5 text-left text-2xl py-2 font-medium tracking-wider	uppercase"
       >
-        Version-enabled Art NFTs
+        Version-enabled NFTs
       </h2>
 
       <div class="py-5 flex justify-between w-8/12">
