@@ -18,9 +18,11 @@ Read the Web3 compatibility section in CCN document for details.
 **This step will not be required after the CCN mainnet launch.**
 
 ### Deploy and test the contract on Huygens_Dev
-> npx hardhat run scripts/contract.js --network Huygens_dev<br>
+> npx hardhat run scripts/contract-deploy.js --network Huygens_dev<br>
 
 ### Deploy and test the contract on Huygens
-> npx hardhat run scripts/contract.js --network Huygens<br>
+> npx hardhat run scripts/contract-deploy.js --network Huygens<br>
 
 Once deployed, you can see the Contract's address and it's balance on terminal.<br>
+
+Currently, Vanft is deployed and tested on Huygens_dev for CCN credit reason.

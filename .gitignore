@@ -2,6 +2,7 @@ node_modules
 .env
 cache
 0x*
+.DS_Store
 
 #Hardhat files
 cache

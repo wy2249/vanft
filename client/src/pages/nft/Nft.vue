@@ -13,7 +13,7 @@
           {{nft.desc}}
         </h3>
         <h5 class="w-12/12 py-5 text-right text-slate-600 text-1xl py-2 font-small tracking-wider">
-          Seller: {{nft.seller.slice(0,7)}}..{{nft.seller.slice(-4)}}
+          Originator: {{nft.seller.slice(0,7)}}..{{nft.seller.slice(-4)}}
         </h5>
         <h5
           class="w-12/12 py-5 text-right text-slate-600 text-1xl py-2 font-small tracking-wider"
@@ -22,7 +22,7 @@
         </h5>
         
         <div class="py-5 flex justify-between w-8/12 justify-end">
-            <button v-show="!isOwner" @click="buyNFT" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
+            <button v-show="!isOwner&&!isSeller" @click="buyNFT" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
               Buy
             </button>
 
@@ -31,7 +31,7 @@
             </button>
 
             <router-link :to="`/canvas/${id}`">
-            <button v-show="!isOwner" @click="createNewVersion" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
+            <button v-show="isOwner" @click="createNewVersion" class=" hover:bg-transparent hover:border-2 border-black hover:text-black dark:hover:bg-transparent dark:hover:border-2 dark:hover:border-white dark:hover:text-white text-xl md:text-2xl px-5 py-5 my-6 text-white bg-black dark:bg-white dark:text-black button">
               Create Version
             </button>
             </router-link>
